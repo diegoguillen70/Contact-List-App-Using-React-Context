@@ -6,11 +6,17 @@ import { getApiInfo } from "../functions/funtions.js";
 const Home = () => {
   const [state, dispatch] = useContext(StoreContext);
   const [resultFetch, setResultFetch] = useState(null);
+  useEffect(() => {
+    getApiInfo(
+      "https://playground.4geeks.com/apis/fake/contact/agenda/diegoguillen",
+      setResultFetch
+    );
+  }, []);
 
   useEffect(() => {
     if (resultFetch) {
-      const user = resultFetch;
-      dispatch({ type: "GET_CONTACT", payload: user });
+      const data = resultFetch;
+      dispatch({ type: "GET_CONTACT", payload: data });
     }
   }, [resultFetch]);
 
@@ -51,15 +57,7 @@ const Home = () => {
                     </span>
                   </div>
                   <div className="d-flex">
-                    <i
-                      className="fa-solid fa-pencil ms-2 fs-4"
-                      onClick={() =>
-                        getApiInfo(
-                          "https://playground.4geeks.com/apis/fake/contact/agenda/juana",
-                          setResultFetch
-                        )
-                      }
-                    ></i>
+                    <i className="fa-solid fa-pencil ms-2 fs-4"></i>
                     <i className="fa-solid fa-trash-can ms-2 fs-4"></i>
                   </div>
                 </div>

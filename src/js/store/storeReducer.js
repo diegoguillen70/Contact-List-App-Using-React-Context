@@ -1,5 +1,5 @@
 export const initialState = [
-  {
+  /* {
     address: "3290 Naples",
     agenda_slug: "Diego",
     email: "diego@mail.com",
@@ -14,7 +14,7 @@ export const initialState = [
     full_name: "Marilyn Hernandez",
     id: 2,
     phone: "255-658965",
-  },
+  },*/
 ];
 
 const storeReducer = (state, action) => {
@@ -26,7 +26,7 @@ const storeReducer = (state, action) => {
       return console.log(state);
 
     case "GET_CONTACT": {
-      return [payload];
+      return payload;
       /*[
         ...state,
         getToDo(
@@ -39,14 +39,5 @@ const storeReducer = (state, action) => {
       throw new Error("No case Match");
   }
 };
-
-async function getInfoAPI() {
-  const response = await fetch(
-    "https://playground.4geeks.com/apis/fake/contact/agenda/juana"
-  );
-  const dataJson = await response.json();
-  console.log(dataJson);
-  return dataJson;
-}
 
 export default storeReducer;

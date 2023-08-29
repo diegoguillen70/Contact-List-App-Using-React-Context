@@ -1,6 +1,7 @@
 export async function getApiInfo(url, callback) {
   const response = await fetch(url);
   const dataJson = await response.json();
+  console.log(dataJson);
   callback(dataJson);
   //return dataJson;
   /*
