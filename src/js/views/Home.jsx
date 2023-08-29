@@ -1,9 +1,19 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "../../styles/home.css";
 import { StoreContext } from "../store/Store";
+import { getApiInfo } from "../functions/funtions.js";
 
 const Home = () => {
   const [state, dispatch] = useContext(StoreContext);
+  const [resultFetch, setResultFetch] = useState(null);
+
+  useEffect(() => {
+    if (resultFetch) {
+      const user = resultFetch;
+      dispatch({ type: "GET_CONTACT", payload: user });
+    }
+  }, [resultFetch]);
+
   console.log(state);
   return (
     <>
@@ -43,7 +53,12 @@ const Home = () => {
                   <div className="d-flex">
                     <i
                       className="fa-solid fa-pencil ms-2 fs-4"
-                      onClick={() => dispatch({ type: "GET_CONTACT" })}
+                      onClick={() =>
+                        getApiInfo(
+                          "https://playground.4geeks.com/apis/fake/contact/agenda/juana",
+                          setResultFetch
+                        )
+                      }
                     ></i>
                     <i className="fa-solid fa-trash-can ms-2 fs-4"></i>
                   </div>

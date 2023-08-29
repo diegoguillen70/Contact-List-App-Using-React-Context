@@ -1,5 +1,3 @@
-import { getToDo } from "../functions/funtions.js";
-
 export const initialState = [
   {
     address: "3290 Naples",
@@ -28,8 +26,7 @@ const storeReducer = (state, action) => {
       return console.log(state);
 
     case "GET_CONTACT": {
-      const resp = getInfoAPI();
-      return [resp];
+      return [payload];
       /*[
         ...state,
         getToDo(

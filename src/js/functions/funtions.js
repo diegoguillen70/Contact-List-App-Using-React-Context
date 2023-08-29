@@ -1,8 +1,8 @@
-export async function getToDo(url) {
+export async function getApiInfo(url, callback) {
   const response = await fetch(url);
   const dataJson = await response.json();
-
-  return dataJson;
+  callback(dataJson);
+  //return dataJson;
   /*
 return fetch(`https://playground.4geeks.com/apis/fake/todos/user/${username}`)
     .then(resp => {
