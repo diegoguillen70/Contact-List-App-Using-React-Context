@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import "../../styles/home.css";
 import { StoreContext } from "../store/Store";
-import { getApiInfo } from "../functions/funtions.js";
+import { getApiInfo, deleteContact } from "../functions/funtions.js";
 
 const Home = () => {
   const [state, dispatch] = useContext(StoreContext);
@@ -19,6 +19,15 @@ const Home = () => {
       dispatch({ type: "GET_CONTACT", payload: data });
     }
   }, [resultFetch]);
+
+  function handleDeleteContact(index) {
+    console.log(index);
+    deleteContact(
+      "https://playground.4geeks.com/apis/fake/contact/",
+      index,
+      setResultFetch
+    );
+  }
 
   console.log(state);
   return (
@@ -58,7 +67,13 @@ const Home = () => {
                   </div>
                   <div className="d-flex">
                     <i className="fa-solid fa-pencil ms-2 fs-4"></i>
-                    <i className="fa-solid fa-trash-can ms-2 fs-4"></i>
+                    <i
+                      className="fa-solid fa-trash-can ms-2 fs-4"
+                      onClick={() =>
+                        confirm("Are you sure???") &&
+                        handleDeleteContact(element.id)
+                      }
+                    ></i>
                   </div>
                 </div>
               </div>
