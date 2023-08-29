@@ -1,11 +1,10 @@
 import React, { useContext } from "react";
-import rigoImage from "../../img/rigo-baby.jpg";
 import "../../styles/home.css";
 import { StoreContext } from "../store/Store";
 
 const Home = () => {
   const [state, dispatch] = useContext(StoreContext);
-  //console.log(state);
+  console.log(state);
   return (
     <>
       {state.map((element, index) => {
@@ -13,29 +12,40 @@ const Home = () => {
           <div key={index} className="row d-flex justify-content-center mt-5">
             <div className="col-6 col-sm-6">
               <div className="list list-row block">
-                <div className="list-item d-flex" style={{ height: "200px" }}>
-                  <span className="w-25 avatar gd-warning">
+                <div
+                  className="list-item d-flex justify-content-between"
+                  style={{ height: "200px" }}
+                >
+                  <span className="w-25 avatar gd-warning ">
                     <img
                       src="https://img.freepik.com/premium-vector/young-smiling-man-avatar-man-with-brown-beard-mustache-hair-wearing-yellow-sweater-sweatshirt-3d-vector-people-character-illustration-cartoon-minimal-style_365941-860.jpg?w=2000"
                       alt=""
                     />
                   </span>
-                  <div className="d-flex flex-column">
+                  <div className="d-flex flex-column me-auto">
                     <span>{element.full_name}</span>
-                    <div className="item-except text-muted text-sm h-1x">
-                      <i className="fa-solid fa-location-dot"></i>
-                      <span>{element.address}</span>
-                      <i className="fa-solid fa-phone-flip"></i>
-                      <span>{element.phone}</span>
-                      <i className="fa-solid fa-envelope"></i>
-                      <span>{element.phone}</span>
-                    </div>
+
+                    <span>
+                      <i className="fa-solid fa-location-dot me-2 mt-2"></i>
+                      {element.address}
+                    </span>
+
+                    <span>
+                      <i className="fa-solid fa-phone-flip me-2 mt-2"></i>
+                      {element.phone}
+                    </span>
+
+                    <span>
+                      <i className="fa-solid fa-envelope me-2 mt-2"></i>
+                      {element.email}
+                    </span>
                   </div>
-                  <div className="no-wrap">
-                    <div className="d-flex">
-                      <i className="fa-solid fa-pencil"></i>
-                      <i className="fa-solid fa-trash-can"></i>
-                    </div>
+                  <div className="d-flex">
+                    <i
+                      className="fa-solid fa-pencil ms-2 fs-4"
+                      onClick={() => dispatch({ type: "GET_CONTACT" })}
+                    ></i>
+                    <i className="fa-solid fa-trash-can ms-2 fs-4"></i>
                   </div>
                 </div>
               </div>
