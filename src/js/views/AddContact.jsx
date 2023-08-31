@@ -1,8 +1,6 @@
 import React, { useState, useContext } from "react";
 import { StoreContext } from "../store/Store";
-import { Link } from "react-router-dom";
 import "../../styles/addContact.css";
-import { addContact } from "../functions/funtions.js";
 
 const AddContact = () => {
   const [state, dispatch] = useContext(StoreContext);
@@ -16,13 +14,36 @@ const AddContact = () => {
 
   const handleClick = (e) => {
     e.preventDefault();
-    //console.log(formData);
-    //dispatch({ type: "ADD_CONTACT", payload: formData });
-    addContact(
-      "https://playground.4geeks.com/apis/fake/contact/",
-      formData,
-      dispatch
-    );
+    fetch("https://playground.4geeks.com/apis/fake/contact/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    })
+      .then((resp) => {
+        return resp.json();
+        // (returns promise) will try to parse the result as json as return a promise that you can .then for results
+      })
+      .then(() => {
+        const getApiInfo = async () => {
+          dispatch({ type: "FETCHING_API" });
+          try {
+            const response = await fetch(
+              "https://playground.4geeks.com/apis/fake/contact/agenda/diegoguillen"
+            );
+            const dataJson = await response.json();
+            console.log(state);
+            dispatch({ type: "GET_CONTACTS", payload: dataJson });
+          } catch (error) {
+            console.log("Error Fetch");
+          }
+        };
+        getApiInfo();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
     setFormData({
       address: "",
       email: "",

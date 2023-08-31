@@ -1,40 +1,71 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import "../../styles/home.css";
 import { StoreContext } from "../store/Store";
-import { getApiInfo, deleteContact } from "../functions/funtions.js";
 import Modal from "../component/Modal.jsx";
 
 const Home = () => {
   const [state, dispatch] = useContext(StoreContext);
-  const [resultFetch, setResultFetch] = useState(null);
+  const { listContacts, loading, error } = state;
   useEffect(() => {
-    getApiInfo(
-      "https://playground.4geeks.com/apis/fake/contact/agenda/diegoguillen",
-      setResultFetch
-    );
+    //dispatch({ type: "GET_CONTACTS", payload: state });
+    const getApiInfo = async () => {
+      dispatch({ type: "FETCHING_API" });
+      try {
+        const response = await fetch(
+          "https://playground.4geeks.com/apis/fake/contact/agenda/diegoguillen"
+        );
+        const dataJson = await response.json();
+        console.log(state);
+        dispatch({ type: "GET_CONTACTS", payload: dataJson });
+      } catch (error) {
+        console.log("Error Fetch");
+      }
+    };
+    getApiInfo();
   }, []);
 
-  useEffect(() => {
-    if (resultFetch) {
-      //const data = resultFetch;
-      //dispatch({ type: "GET_CONTACT", payload: data });
-    }
-  }, [resultFetch]);
+  function handleDeleteContact(id) {
+    dispatch({ type: "FETCHING_API" });
+    console.log("https://playground.4geeks.com/apis/fake/contact/" + id);
 
-  function handleDeleteContact(index) {
-    console.log(index);
-    deleteContact(
-      "https://playground.4geeks.com/apis/fake/contact/",
-      index,
-      setResultFetch
-    );
+    fetch("https://playground.4geeks.com/apis/fake/contact/" + id, {
+      method: "DELETE",
+    })
+      .then((resp) => {
+        console.log(resp.status); // the status code = 200 or code = 400 etc.
+        return resp.json();
+      })
+      .then(() => {
+        const getApiInfo = async () => {
+          dispatch({ type: "FETCHING_API" });
+          try {
+            const response = await fetch(
+              "https://playground.4geeks.com/apis/fake/contact/agenda/diegoguillen"
+            );
+            const dataJson = await response.json();
+            console.log(state);
+            dispatch({ type: "GET_CONTACTS", payload: dataJson });
+          } catch (error) {
+            console.log("Error Fetch");
+          }
+        };
+        getApiInfo();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
-  //console.log(state);
+  console.log(state);
   return (
     <>
-      {resultFetch &&
-        resultFetch.map((element, index) => {
+      {loading ? (
+        <p>loading...</p>
+      ) : error ? (
+        <p>{error}</p>
+      ) : (
+        listContacts &&
+        listContacts.map((element, index) => {
           return (
             <div key={index} className="row d-flex justify-content-center mt-5">
               <div className="col-6 col-sm-6">
@@ -90,7 +121,8 @@ const Home = () => {
               </div>
             </div>
           );
-        })}
+        })
+      )}
 
       <style>{`body{background-color: rgb(204, 230, 255);}`}</style>
     </>

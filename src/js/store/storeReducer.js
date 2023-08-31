@@ -1,46 +1,35 @@
-import {
-  addContact,
-  deleteContact,
-  updateContact,
-} from "../functions/funtions";
-
 export const initialState = [
   {
-    address: "3290 Naples",
-    agenda_slug: "diegoguillen",
-    email: "diego@mail.com",
-    full_name: "Diego Guillen",
-    phone: "255-658980",
+    listContacts: {},
+    loading: false,
   },
 ];
 
-function storeReducer(state, action) {
+export function storeReducer(state, action) {
   const { type, payload } = action;
 
   switch (type) {
-    case "ADD_CONTACT":
-      console.log(payload);
-      return payload;
-
-    case "HOLD_USER": {
-      console.log(payload);
-      return payload;
+    case "FETCHING_API": {
+      return {
+        ...state,
+        loading: true,
+      };
     }
-    case "UPDATE_CONTACT": {
-      console.log(payload);
-      return payload;
+    case "ADD_CONTACT": {
+      return {
+        listContacts: { state, payload },
+        loading: false,
+      };
     }
 
-    case "DELETE_CONTACT": {
-      deleteContact(
-        "https://playground.4geeks.com/apis/fake/contact/" + payload.id
-      );
-      break;
+    case "GET_CONTACTS": {
+      return {
+        listContacts: payload,
+        loading: false,
+      };
     }
 
     default:
       throw new Error("No case Match");
   }
 }
-
-export default storeReducer;

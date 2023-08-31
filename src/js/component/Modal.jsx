@@ -12,18 +12,6 @@ const Modal = () => {
     phone: "",
   });
 
-  useEffect(() => {
-    console.log("inside of Effect");
-    console.log(state);
-    setFormData({
-      ...formData,
-      address: state.address,
-      email: state.email,
-      full_name: state.full_name,
-      phone: state.phone,
-    });
-  }, [state]);
-
   const handleClick = (e) => {
     e.preventDefault();
     console.log(formData);
