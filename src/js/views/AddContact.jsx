@@ -17,7 +17,12 @@ const AddContact = () => {
   const handleClick = (e) => {
     e.preventDefault();
     //console.log(formData);
-    dispatch({ type: "ADD_CONTACT", payload: formData });
+    //dispatch({ type: "ADD_CONTACT", payload: formData });
+    addContact(
+      "https://playground.4geeks.com/apis/fake/contact/",
+      formData,
+      dispatch
+    );
     setFormData({
       address: "",
       email: "",

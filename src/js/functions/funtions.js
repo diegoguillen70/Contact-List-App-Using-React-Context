@@ -3,18 +3,6 @@ export async function getApiInfo(url, callBack) {
   const dataJson = await response.json();
   console.log(dataJson);
   callBack(dataJson);
-  //return dataJson;
-  /*
-return fetch(`https://playground.4geeks.com/apis/fake/todos/user/${username}`)
-    .then(resp => {
-        //console.log(resp.ok); // will be true if the response is successful
-        console.log(resp.status); // the status code = 200 or code = 400 etc.
-        //console.log(resp.json); // will try return the exact result as string
-        return resp.json(); 
-        // (returns promise) will try to parse the result as json as return a promise that you can .then for results
-    }).then(data => {
-        console.log(data)
-})*/
 }
 
 export function deleteContact(url, id, callBack) {
@@ -23,11 +11,9 @@ export function deleteContact(url, id, callBack) {
     method: "DELETE",
   })
     .then((resp) => {
-      //console.log(resp.ok); // will be true if the response is successful
       console.log(resp.status); // the status code = 200 or code = 400 etc.
-      //console.log(resp.json); // will try return the exact result as string
+
       return resp.json();
-      // (returns promise) will try to parse the result as json as return a promise that you can .then for results
     })
     .then(
       (dataJson) =>
@@ -39,7 +25,7 @@ export function deleteContact(url, id, callBack) {
     });
 }
 
-export function addContact(url, payload) {
+export function addContact(url, payload, callBack) {
   fetch(url, {
     method: "POST",
     headers: {
@@ -51,20 +37,19 @@ export function addContact(url, payload) {
       //console.log(resp.ok); // will be true if the response is successful
       console.log(resp.status); // the status code = 200 or code = 400 etc.
       //console.log(resp.json); // will try return the exact result as string
+      callBack({ type: "ADD_CONTACT", payload: payload });
       return resp.json();
       // (returns promise) will try to parse the result as json as return a promise that you can .then for results
     })
-    .then((dataJson) => {
-      console.log(dataJson);
-      //setList(dataJson);
-    })
+    .then((dataJson) => dataJson)
     .catch((err) => {
       console.log(err);
     });
 }
 
-export function updateContact(url, id, payload) {
-  fetch(url + "/" + id, {
+export function updateContact(url, id, payload, callBack) {
+  console.log(url + id);
+  fetch(url + id, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
@@ -72,33 +57,10 @@ export function updateContact(url, id, payload) {
     body: JSON.stringify(payload),
   })
     .then((resp) => {
-      //console.log(resp.ok); // will be true if the response is successful
       console.log(resp.status); // the status code = 200 or code = 400 etc.
-      //console.log(resp.json); // will try return the exact result as string
-      return resp.json();
-      // (returns promise) will try to parse the result as json as return a promise that you can .then for results
+      callBack({ type: "UPDATE_CONTACT", payload: payload });
     })
-    .then((data) => {
-      console.log(data[0]);
-    })
-    .catch((error) => {
-      console.error(error);
-    });
-}
-
-export function deleteUserToDo(url) {
-  fetch(url, {
-    method: "DELETE",
-  })
-    .then((resp) => {
-      //console.log(resp.ok);
-      console.log(resp.status);
-      //console.log(resp.json);
-      return resp.json();
-    })
-    .then((data) => {
-      console.log(data);
-    })
+    .then((data) => data)
     .catch((error) => {
       console.error(error);
     });

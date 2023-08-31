@@ -1,4 +1,8 @@
-import { addContact } from "../functions/funtions";
+import {
+  addContact,
+  deleteContact,
+  updateContact,
+} from "../functions/funtions";
 
 export const initialState = [
   {
@@ -10,21 +14,33 @@ export const initialState = [
   },
 ];
 
-const storeReducer = (state, action) => {
+function storeReducer(state, action) {
   const { type, payload } = action;
 
   switch (type) {
     case "ADD_CONTACT":
       console.log(payload);
-      addContact("https://playground.4geeks.com/apis/fake/contact/", payload);
-      break;
+      return payload;
 
-    case "GET_CONTACT": {
+    case "HOLD_USER": {
+      console.log(payload);
       return payload;
     }
+    case "UPDATE_CONTACT": {
+      console.log(payload);
+      return payload;
+    }
+
+    case "DELETE_CONTACT": {
+      deleteContact(
+        "https://playground.4geeks.com/apis/fake/contact/" + payload.id
+      );
+      break;
+    }
+
     default:
       throw new Error("No case Match");
   }
-};
+}
 
 export default storeReducer;
