@@ -1,28 +1,58 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect, useCallback } from "react";
 import { StoreContext } from "../store/Store.js";
-import { updateContact } from "../functions/funtions.js";
+import "./../../styles/modal.css";
 
-const Modal = () => {
+const Modal = ({ onShow }) => {
   const [state, dispatch] = useContext(StoreContext);
-  const [formData, setFormData] = useState({
-    address: "",
-    agenda_slug: "diegoguillen",
-    email: "",
-    full_name: "",
-    phone: "",
-  });
+  const [formData, setFormData] = useState({});
+
+  useEffect(() => {
+    console.log("Inside useEffect");
+    setFormData({
+      ...formData,
+      agenda_slug: "diegoguillen",
+      address: state.contactSelect.address,
+      email: state.contactSelect.email,
+      full_name: state.contactSelect.full_name,
+      phone: state.contactSelect.phone,
+    });
+  }, []);
 
   const handleClick = (e) => {
     e.preventDefault();
-    console.log(formData);
-    updateContact(
-      "https://playground.4geeks.com/apis/fake/contact/",
-      state.id,
-      formData,
-      dispatch
-    );
-    //dispatch({ type: "UPDATE_CONTACT", payload: formData });
-    console.log(state);
+    //console.log(state.contactSelect.id);
+    fetch(
+      "https://playground.4geeks.com/apis/fake/contact/" +
+        state.contactSelect.id,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      }
+    )
+      .then((resp) => {
+        console.log(resp.status); // the status code = 200 or code = 400 etc.
+        return resp.json();
+      })
+      .then(() => {
+        const getApiInfo = async () => {
+          dispatch({ type: "FETCHING_API" });
+          try {
+            const response = await fetch(
+              "https://playground.4geeks.com/apis/fake/contact/agenda/diegoguillen"
+            );
+            const dataJson = await response.json();
+            console.log(state);
+            dispatch({ type: "GET_CONTACTS", payload: dataJson });
+            onShow(false);
+          } catch (error) {
+            console.log("Error Fetch");
+          }
+        };
+        getApiInfo();
+      });
   };
   function handleChange(e) {
     setFormData({
@@ -32,103 +62,72 @@ const Modal = () => {
     });
   }
 
-  //console.log(state);
+  console.log(formData);
   return (
-    <div
-      className="modal fade"
-      id="exampleModal"
-      tabIndex={-1}
-      aria-labelledby="exampleModalLabel"
-      aria-hidden="true"
-    >
-      <div className="modal-dialog">
-        <div className="modal-content">
-          <div className="modal-header">
-            <h5 className="modal-title" id="exampleModalLabel">
-              Edit Contact
-            </h5>
-            <button
-              type="button"
-              className="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            />
-          </div>
-          <div className="modal-body">
-            <form className="row g-3">
-              <div className="col-md-6">
-                <label htmlFor="inputEmail4" className="form-label">
-                  Phone
-                </label>
-                <input
-                  type="email"
-                  className="form-control"
-                  id="inputEmail4"
-                  name="phone"
-                  value={formData.phone}
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="col-md-6">
-                <label htmlFor="inputPassword4" className="form-label">
-                  Email
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="inputPassword4"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="col-12">
-                <label htmlFor="inputAddress" className="form-label">
-                  Full Name
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="inputAddress"
-                  name="full_name"
-                  value={formData.full_name}
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="col-12">
-                <label htmlFor="inputAddress2" className="form-label">
-                  Address
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="inputAddress2"
-                  name="address"
-                  value={formData.address}
-                  onChange={handleChange}
-                />
-              </div>
-            </form>
-          </div>
-          <div className="modal-footer">
-            <button
-              type="button"
-              className="btn btn-secondary"
-              data-bs-dismiss="modal"
-            >
-              Close
-            </button>
-            <button
-              type="button"
-              className="btn btn-primary"
-              onClick={(e) => handleClick(e)}
-            >
-              Save changes
-            </button>
-          </div>
+    <>
+      <div className="form">
+        <div className="title">Edit Contact</div>
+        <label className="labels">Full Name</label>
+        <div className="input-container ic1">
+          <input
+            id="firstname"
+            className="input"
+            type="text"
+            placeholder=" "
+            name="full_name"
+            value={formData.full_name}
+            onChange={handleChange}
+          />
+          <div className="" />
         </div>
+        <label className="labels">Address</label>
+        <div className="input-container ic1">
+          <input
+            id="firstname"
+            className="input"
+            type="text"
+            placeholder=" "
+            name="address"
+            value={formData.address}
+            onChange={handleChange}
+          />
+          <div className="" />
+        </div>
+        <label className="labels">Phone Number</label>
+        <div className="input-container ic1">
+          <input
+            id="firstname"
+            className="input"
+            type="text"
+            placeholder=" "
+            name="phone"
+            value={formData.phone}
+            onChange={handleChange}
+          />
+          <div className="" />
+        </div>
+        <label className="labels">Email Address</label>
+        <div className="input-container ic1">
+          <input
+            id="firstname"
+            className="input"
+            type="text"
+            placeholder=" "
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+          />
+          <div className="" />
+        </div>
+
+        <button type="text" className="update" onClick={handleClick}>
+          Update
+        </button>
+        <button type="text" className="cancel" onClick={() => onShow(false)}>
+          Cancel
+        </button>
       </div>
-    </div>
+    </>
   );
 };
 

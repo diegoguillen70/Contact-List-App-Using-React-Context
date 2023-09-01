@@ -2,6 +2,7 @@ export const initialState = [
   {
     listContacts: {},
     loading: false,
+    contactSelect: [],
   },
 ];
 
@@ -26,6 +27,20 @@ export function storeReducer(state, action) {
       return {
         listContacts: payload,
         loading: false,
+      };
+    }
+
+    case "UPDATE_CONTACT": {
+      return {
+        ...state,
+        loading: false,
+      };
+    }
+
+    case "GET_CURRENT_CONTACT": {
+      return {
+        ...state,
+        contactSelect: payload,
       };
     }
 
