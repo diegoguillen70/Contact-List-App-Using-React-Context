@@ -65,3 +65,13 @@ export function updateContact(url, id, payload, callBack) {
       console.error(error);
     });
 }
+
+export function validateEmail(input) {
+  var validRegex =
+    /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+  if (input.match(validRegex)) {
+    return true;
+  } else {
+    return false;
+  }
+}

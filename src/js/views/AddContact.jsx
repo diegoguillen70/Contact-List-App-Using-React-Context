@@ -1,6 +1,7 @@
 import React, { useState, useContext } from "react";
 import { StoreContext } from "../store/Store";
 import "../../styles/addContact.css";
+import { validateEmail } from "../functions/funtions.js";
 
 const AddContact = () => {
   const [state, dispatch] = useContext(StoreContext);
@@ -15,36 +16,56 @@ const AddContact = () => {
 
   const handleClick = (e) => {
     e.preventDefault();
-    fetch("https://playground.4geeks.com/apis/fake/contact/", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formData),
-    })
-      .then((resp) => {
-        return resp.json();
-        // (returns promise) will try to parse the result as json as return a promise that you can .then for results
+
+    if (validateEmail(formData.email)) {
+      fetch("https://playground.4geeks.com/apis/fake/contact/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
       })
-      .then(() => {
-        const getApiInfo = async () => {
-          dispatch({ type: "FETCHING_API" });
-          try {
-            const response = await fetch(
-              "https://playground.4geeks.com/apis/fake/contact/agenda/diegoguillen"
-            );
-            const dataJson = await response.json();
-            console.log(state);
-            dispatch({ type: "GET_CONTACTS", payload: dataJson });
-          } catch (error) {
-            console.log("Error Fetch");
-          }
-        };
-        getApiInfo();
-      })
-      .catch((err) => {
-        console.log(err);
+        .then((resp) => {
+          return resp.json();
+          // (returns promise) will try to parse the result as json as return a promise that you can .then for results
+        })
+        .then(() => {
+          const getApiInfo = async () => {
+            dispatch({ type: "FETCHING_API" });
+            try {
+              const response = await fetch(
+                "https://playground.4geeks.com/apis/fake/contact/agenda/diegoguillen"
+              );
+              const dataJson = await response.json();
+              //console.log(state);
+              dispatch({ type: "GET_CONTACTS", payload: dataJson });
+            } catch (error) {
+              console.log("Error Fetch");
+            }
+          };
+          getApiInfo();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+      setFormData({
+        address: "",
+        email: "",
+        full_name: "",
+        phone: "",
+        //image: "",
       });
+    } else {
+      alert("Email no Valid");
+      setFormData({
+        ...formData,
+        email: "",
+      });
+    }
+  };
+
+  function clearForm(e) {
+    e.preventDefault();
     setFormData({
       address: "",
       email: "",
@@ -52,14 +73,22 @@ const AddContact = () => {
       phone: "",
       //image: "",
     });
-  };
+  }
 
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      agenda_slug: "diegoguillen",
-      [e.target.name]: e.target.value,
-    });
+    if (e.target.name == "phone") {
+      setFormData({
+        ...formData,
+        agenda_slug: "diegoguillen",
+        [e.target.name]: e.target.value.replace(/[^0-9]/g, ""),
+      });
+    } else {
+      setFormData({
+        ...formData,
+        agenda_slug: "diegoguillen",
+        [e.target.name]: e.target.value,
+      });
+    }
   };
   //console.log(formData);
   return (
@@ -127,7 +156,7 @@ const AddContact = () => {
               type="submit"
               value="Clear"
               name="clear"
-              onClick={handleClick}
+              onClick={clearForm}
             />
           </div>
         </form>
