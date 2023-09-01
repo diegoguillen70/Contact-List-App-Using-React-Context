@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import "../../styles/home.css";
 import { StoreContext } from "../store/Store";
 import Modal from "../component/Modal.jsx";
-
+//"https://img.freepik.com/premium-vector/young-smiling-man-avatar-man-with-brown-beard-mustache-hair-wearing-yellow-sweater-sweatshirt-3d-vector-people-character-illustration-cartoon-minimal-style_365941-860.jpg?w=2000"
 const Home = () => {
   const [state, dispatch] = useContext(StoreContext);
   const [isShowModal, setIsShowModal] = useState(false);
@@ -85,10 +85,11 @@ const Home = () => {
                         className="list-item d-flex justify-content-between"
                         style={{ height: "200px" }}
                       >
-                        <span className="w-25 avatar gd-warning ">
+                        <span>
                           <img
-                            src="https://img.freepik.com/premium-vector/young-smiling-man-avatar-man-with-brown-beard-mustache-hair-wearing-yellow-sweater-sweatshirt-3d-vector-people-character-illustration-cartoon-minimal-style_365941-860.jpg?w=2000"
+                            src="https://camo.githubusercontent.com/eb6a385e0a1f0f787d72c0b0e0275bc4516a261b96a749f1cd1aa4cb8736daba/68747470733a2f2f612e736c61636b2d656467652e636f6d2f64663130642f696d672f617661746172732f6176615f303032322d3531322e706e67"
                             alt=""
+                            style={{ height: "200px" }}
                           />
                         </span>
                         <div className="d-flex flex-column me-auto">

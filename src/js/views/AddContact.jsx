@@ -10,6 +10,7 @@ const AddContact = () => {
     email: "",
     full_name: "",
     phone: "",
+    //image: "",
   });
 
   const handleClick = (e) => {
@@ -49,6 +50,7 @@ const AddContact = () => {
       email: "",
       full_name: "",
       phone: "",
+      //image: "",
     });
   };
 

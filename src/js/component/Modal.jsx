@@ -15,6 +15,7 @@ const Modal = ({ onShow }) => {
       email: state.contactSelect.email,
       full_name: state.contactSelect.full_name,
       phone: state.contactSelect.phone,
+      image: state.contactSelect.image,
     });
   }, []);
 
@@ -76,6 +77,19 @@ const Modal = ({ onShow }) => {
             placeholder=" "
             name="full_name"
             value={formData.full_name}
+            onChange={handleChange}
+          />
+          <div className="" />
+        </div>
+        <label className="labels">Profile Image</label>
+        <div className="input-container ic1">
+          <input
+            id="firstname"
+            className="input"
+            type="text"
+            placeholder=" "
+            name="image"
+            value={formData.image}
             onChange={handleChange}
           />
           <div className="" />
