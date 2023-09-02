@@ -1,4 +1,5 @@
 import React, { useState, useContext } from "react";
+import { useNavigate } from "react-router";
 import { StoreContext } from "../store/Store";
 import "../../styles/addContact.css";
 import { validateEmail } from "../functions/funtions.js";
@@ -13,7 +14,7 @@ const AddContact = () => {
     phone: "",
     //image: "",
   });
-
+  const goHome = useNavigate();
   const handleClick = (e) => {
     e.preventDefault();
 
@@ -55,6 +56,7 @@ const AddContact = () => {
         phone: "",
         //image: "",
       });
+      goHome("/");
     } else {
       alert("Email no Valid");
       setFormData({
